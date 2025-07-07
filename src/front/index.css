@@ -1,0 +1,14 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+
+/* Estilos globales */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Estilo personalizado para el logo de la landing page */
+.logo-x {
+  width: 120px;
+  height: 120px;}
+  
