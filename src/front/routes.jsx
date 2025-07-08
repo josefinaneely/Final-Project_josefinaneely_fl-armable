@@ -9,7 +9,7 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import { Landingpage } from "./components/Landingpage";
+import { Landingpage } from "./pages/Landingpage";
 import { Login } from "./pages/Login";
 
 export const router = createBrowserRouter(
