@@ -12,6 +12,7 @@ import { Demo } from "./pages/Demo";
 import { Landingpage } from "./pages/Landingpage";
 import { Login } from "./pages/Login";
 import { Userpage } from "./pages/Userpage";
+import { Signup } from "./pages/Signup";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,12 +26,13 @@ export const router = createBrowserRouter(
     <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landingpage />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
-      <Route path="/landingpage" element={<Landingpage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/userpage" element={<Userpage />} />
+      <Route path="/signup" element={<Signup />} />
     </Route>
   )
 );

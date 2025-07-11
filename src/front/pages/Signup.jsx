@@ -1,39 +1,54 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
+export const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
-    // Usa el mismo color que en Landingpage.jsx
     const cloudColor = "#6EC6F3";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
-        // Aquí deberías hacer la petición a tu API para autenticar
-        if (email && password) {
-            // Si el usuario existe, redirige a /userpage
-            navigate("/userpage");
+        // Aquí deberías hacer la petición a tu API para crear el usuario
+        if (email && password && name) {
+            setSuccess("Cuenta creada exitosamente");
+            setTimeout(() => navigate("/login"), 1800);
         } else {
-            setError("Usuario o contraseña incorrectos");
+            setError("Por favor completa todos los campos.");
         }
     };
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
             <div className="card p-5 shadow" style={{ maxWidth: "480px", width: "100%", borderRadius: "40px", backgroundColor: "#fff" }}>
-                <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Iniciar sesión</h2>
+                <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Crear cuenta</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="loginEmail" className="form-label" style={{ fontSize: "1.2rem" }}> Tu email </label>
+                        <label htmlFor="signupName" className="form-label" style={{ fontSize: "1.2rem" }}>Nombre</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="signupName"
+                            placeholder=""
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                            style={{ borderRadius: "20px", fontSize: "1.1rem" }}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="signupEmail" className="form-label" style={{ fontSize: "1.2rem" }}>Email</label>
                         <input
                             type="email"
                             className="form-control"
-                            id="loginEmail"
+                            id="signupEmail"
                             placeholder=""
                             value={email}
                             onChange={e => setEmail(e.target.value)}
@@ -42,11 +57,11 @@ export const Login = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="loginPassword" className="form-label" style={{ fontSize: "1.2rem" }}> Tu contraseña </label>
+                        <label htmlFor="signupPassword" className="form-label" style={{ fontSize: "1.2rem" }}>Contraseña</label>
                         <input
                             type="password"
                             className="form-control"
-                            id="loginPassword"
+                            id="signupPassword"
                             placeholder=""
                             value={password}
                             onChange={e => setPassword(e.target.value)}
@@ -54,13 +69,21 @@ export const Login = () => {
                             style={{ borderRadius: "20px", fontSize: "1.1rem" }}
                         />
                     </div>
-                    <div className="mb-4 form-check">
-                        <input type="checkbox" className="form-check-input" id="loginCheck" />
-                        <label className="form-check-label" htmlFor="loginCheck" style={{ fontSize: "1.1rem" }}>
-                            Recuérdame
-                        </label>
-                    </div>
                     {error && <div className="alert alert-danger">{error}</div>}
+                    {success && (
+                        <div
+                            className="alert alert-success text-center"
+                            style={{
+                                fontSize: "1.2rem",
+                                borderRadius: "20px",
+                                backgroundColor: cloudColor,
+                                color: "#fff",
+                                fontWeight: "bold"
+                            }}
+                        >
+                            {success}
+                        </div>
+                    )}
                     <button
                         type="submit"
                         className="btn w-100"
@@ -74,15 +97,9 @@ export const Login = () => {
                             fontWeight: "bold"
                         }}
                     >
-                        Sign in
+                        Crear cuenta
                     </button>
                 </form>
-                <div className="text-center mt-4" style={{ fontSize: "1.1rem" }}>
-                    Si no tienes cuenta, pide ayuda a un adulto y haz click{" "}
-                    <Link to="/signup" style={{ color: cloudColor, fontWeight: "bold", textDecoration: "underline" }}>
-                        aquí
-                    </Link>
-                </div>
             </div>
         </div>
     );
