@@ -13,6 +13,8 @@ import { Landingpage } from "./pages/Landingpage";
 import { Login } from "./pages/Login";
 import { Userpage } from "./pages/Userpage";
 import { Signup } from "./pages/Signup";
+import Chathistoria from "./pages/Chathistoria";
+import Chatciencia from "./pages/Chatciencia";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +35,10 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/userpage" element={<Userpage />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/chatciencia" element={<Chatciencia />} />
+      <Route path="/chathistoria" element={<Chathistoria />} />
+
+      {/* Outlet component renders the matched child route */}
     </Route>
   )
 );

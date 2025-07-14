@@ -2,12 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, QA
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import jwt
 import datetime
 import os
+import openai
+
 
 api = Blueprint('api', __name__)
 
@@ -64,3 +66,37 @@ def signup():
     db.session.commit()
 
     return jsonify({"msg": "Usuario creado exitosamente"}), 201
+
+
+@api.route('/ask', methods=['POST'])
+def ask_openai():
+    data = request.get_json()
+    question = data.get("question")
+    user_id = data.get("user_id")  # Opcional
+
+    if not question:
+        return jsonify({"msg": "Falta la pregunta"}), 400
+
+    # Llama a la API de OpenAI
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # O el modelo que prefieras
+            messages=[{"role": "user", "content": question}]
+        )
+        answer = response.choices[0].message["content"].strip()
+    except Exception as e:
+        return jsonify({"msg": "Error al conectar con OpenAI", "error": str(e)}), 500
+
+    # Guarda en la base de datos
+    qa = QA(question=question, answer=answer, user_id=user_id)
+    db.session.add(qa)
+    db.session.commit()
+
+    return jsonify({"answer": answer, "qa": qa.serialize()}), 200
+
+
+@api.route('/qa', methods=['GET'])
+def get_qas():
+    qas = QA.query.all()
+    return jsonify([qa.serialize() for qa in qas]), 200

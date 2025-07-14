@@ -16,10 +16,23 @@ export const Signup = () => {
         setError("");
         setSuccess("");
 
-        // Aquí deberías hacer la petición a tu API para crear el usuario
         if (email && password && name) {
-            setSuccess("Cuenta creada exitosamente");
-            setTimeout(() => navigate("/login"), 1800);
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password, name })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setSuccess("Cuenta creada exitosamente");
+                    setTimeout(() => navigate("/login"), 1800);
+                } else {
+                    setError(data.msg || "Error al crear la cuenta");
+                }
+            } catch (err) {
+                setError("Error de conexión con la API");
+            }
         } else {
             setError("Por favor completa todos los campos.");
         }
