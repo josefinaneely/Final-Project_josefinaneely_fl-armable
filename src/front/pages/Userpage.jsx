@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 
 export const Userpage = () => {
     const cloudColor = "#6EC6F3";
-    const yellowCard = "#FFE066";
-    const greenCard = "#7ED957";
+    const yellowCard = "#FFF9C4"; // amarillo suave, mismo tono que el verde
+    const greenCard = "#A6E9B4"; // verde menos fuerte, igual que en Chathistoria.jsx
 
     return (
-        <div className="container mt-5 d-flex flex-column align-items-center">
-            {/* Card Ciencia - Amarillo */}
+        <div
+            className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
+            style={{
+                position: "relative",
+                overflow: "hidden"
+            }}
+        >
+            {/* Card Ciencia - Amarillo suave */}
             <div
                 className="card p-5 shadow mb-5 d-flex flex-row align-items-center justify-content-center"
                 style={{
@@ -18,7 +24,8 @@ export const Userpage = () => {
                     maxHeight: "400px",
                     borderRadius: "40px",
                     backgroundColor: yellowCard,
-                    aspectRatio: "1/1"
+                    aspectRatio: "1/1",
+                    zIndex: 1
                 }}
             >
                 <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
@@ -44,7 +51,7 @@ export const Userpage = () => {
                     </Link>
                 </div>
             </div>
-            {/* Card Historia - Verde */}
+            {/* Card Historia - Verde menos fuerte */}
             <div
                 className="card p-5 shadow d-flex flex-row align-items-center justify-content-center"
                 style={{
@@ -54,7 +61,8 @@ export const Userpage = () => {
                     maxHeight: "400px",
                     borderRadius: "40px",
                     backgroundColor: greenCard,
-                    aspectRatio: "1/1"
+                    aspectRatio: "1/1",
+                    zIndex: 1
                 }}
             >
                 <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">

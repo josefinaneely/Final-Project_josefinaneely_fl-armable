@@ -8,7 +8,7 @@ from flask_cors import CORS
 import jwt
 import datetime
 import os
-import openai
+
 
 
 api = Blueprint('api', __name__)

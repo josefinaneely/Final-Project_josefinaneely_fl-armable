@@ -39,7 +39,7 @@ export const Signup = () => {
     };
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti" style={{ position: "relative", overflow: "hidden" }}>
             <div className="card p-5 shadow" style={{ maxWidth: "480px", width: "100%", borderRadius: "40px", backgroundColor: "#fff" }}>
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Crear cuenta</h2>
                 <form onSubmit={handleSubmit}>

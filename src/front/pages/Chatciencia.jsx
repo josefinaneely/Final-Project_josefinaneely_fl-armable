@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 const Chatciencia = () => {
     const cloudColor = "#6EC6F3";
-    const yellowCard = "#FFE066";
+    const yellowCard = "#FFF9C4"; // amarillo suave, igual que en Userpage.jsx
+
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
@@ -35,17 +36,24 @@ const Chatciencia = () => {
     };
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+        <div
+            className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
+            style={{
+                position: "relative",
+                overflow: "hidden"
+            }}
+        >
             <div
                 className="card p-5 shadow d-flex flex-column align-items-center justify-content-center"
                 style={{
-                    maxWidth: "700px",
-                    minWidth: "700px",
-                    minHeight: "400px",
-                    maxHeight: "400px",
+                    maxWidth: "900px",
+                    minWidth: "900px",
+                    minHeight: "600px",
+                    maxHeight: "600px",
                     borderRadius: "40px",
                     backgroundColor: yellowCard,
-                    aspectRatio: "1/1"
+                    aspectRatio: "1/1",
+                    zIndex: 1
                 }}
             >
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: "#444", fontSize: "2.5rem" }}>
@@ -61,7 +69,7 @@ const Chatciencia = () => {
                         style={{
                             borderRadius: "20px",
                             fontSize: "1.2rem",
-                            maxWidth: "400px",
+                            maxWidth: "500px",
                             width: "100%",
                             padding: "18px 20px"
                         }}
