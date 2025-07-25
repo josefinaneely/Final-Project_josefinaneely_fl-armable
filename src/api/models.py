@@ -37,4 +37,22 @@ class QA(db.Model):
             "answer": self.answer,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "user_id": self.user_id
+
+        }
+
+
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    prompt = db.Column(db.String(2048), nullable=False)
+    response = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "prompt": self.prompt,
+            "response": self.response,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "user_id": self.user_id
         }

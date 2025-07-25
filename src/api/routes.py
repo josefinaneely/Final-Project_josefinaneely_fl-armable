@@ -2,14 +2,15 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, QA
+from api.models import db, User, QA, Chat
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import jwt
 import datetime
 import os
 
-
+# Importa el SDK de Clarifai
+from clarifai.client.model import Model
 
 api = Blueprint('api', __name__)
 
@@ -69,31 +70,36 @@ def signup():
 
 
 @api.route('/ask', methods=['POST'])
-def ask_openai():
+def ask_clarifai():
     data = request.get_json()
-    question = data.get("question")
+    prompt = data.get("question")
     user_id = data.get("user_id")  # Opcional
 
-    if not question:
+    if not prompt:
         return jsonify({"msg": "Falta la pregunta"}), 400
 
-    # Llama a la API de OpenAI
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    # Llama a la API de Clarifai (GPT-4_1)
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # O el modelo que prefieras
-            messages=[{"role": "user", "content": question}]
-        )
-        answer = response.choices[0].message["content"].strip()
+        model = Model(
+            url="https://clarifai.com/openai/chat-completion/models/gpt-4_1")
+        response = model.predict(prompt=prompt)
+        # Si la respuesta es un objeto, ajusta para extraer el texto
+        answer = response if isinstance(response, str) else str(response)
     except Exception as e:
-        return jsonify({"msg": "Error al conectar con OpenAI", "error": str(e)}), 500
+        return jsonify({"msg": "Error al conectar con Clarifai", "error": str(e)}), 500
 
     # Guarda en la base de datos
-    qa = QA(question=question, answer=answer, user_id=user_id)
-    db.session.add(qa)
+    chat = Chat(prompt=prompt, response=answer, user_id=user_id)
+    db.session.add(chat)
     db.session.commit()
 
-    return jsonify({"answer": answer, "qa": qa.serialize()}), 200
+    return jsonify({"answer": answer, "chat": chat.serialize()}), 200
+
+
+@api.route('/chat', methods=['GET'])
+def get_chats():
+    chats = Chat.query.all()
+    return jsonify([chat.serialize() for chat in chats]), 200
 
 
 @api.route('/qa', methods=['GET'])
