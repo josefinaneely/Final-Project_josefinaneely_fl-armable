@@ -24,13 +24,40 @@ body {
 }
 
 .respuesta-clarifai {
+  margin-top: 40px;
+  width: 100%;
+  min-height: 200px; /* antes 120px, ahora más alto */
+  max-height: 400px; /* antes 220px, ahora más alto */
+  overflow-y: auto;
   background: #fffbe6;
   color: #333;
   border-radius: 18px;
-  padding: 20px 24px;
-  margin-top: 24px;
+  padding: 40px 48px; /* más padding */
   font-size: 1.2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   border: 2px solid #ffe066;
   text-align: left;
+  box-sizing: border-box;
+}
+
+.card-custom {
+  max-width: 900px;
+  min-width: 900px;
+  min-height: 900px;
+  border-radius: 40px;
+  aspect-ratio: 1/1;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.card-ciencia {
+  background-color: #fff9c4; /* amarillo */
+}
+
+.card-historia {
+  background-color: #a6e9b4; /* verde */
 }

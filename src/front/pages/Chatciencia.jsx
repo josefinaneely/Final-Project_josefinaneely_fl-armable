@@ -1,8 +1,45 @@
 import React, { useState } from "react";
 
+// Función para transformar el texto de answer a HTML estilizado
+function answerStyle(text) {
+    if (!text) return "";
+
+    // 1. Reemplaza **frase** por <b>frase</b>
+    let html = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+
+    // 2. Detecta listas numeradas tipo: 1. texto, 2. texto, ... y las convierte en <ul><li>...</li></ul>
+    // Busca líneas que empiezan con número punto espacio
+    const lines = html.split(/\n/);
+    let inList = false;
+    let result = [];
+    lines.forEach(line => {
+        const match = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if (match) {
+            if (!inList) {
+                result.push("<ul style='text-align:left; margin-left:1.5em;'>");
+                inList = true;
+            }
+            result.push(`<li>${match[2]}</li>`);
+        } else {
+            if (inList) {
+                result.push("</ul>");
+                inList = false;
+            }
+            result.push(line);
+        }
+    });
+    if (inList) result.push("</ul>");
+    html = result.join("\n");
+
+    // 3. Opcional: reemplaza saltos de línea por <br> para mantener formato
+    html = html.replace(/\n/g, "<br>");
+
+    return html;
+}
+
 const Chatciencia = () => {
     const cloudColor = "#6EC6F3";
-    const yellowCard = "#FFF9C4"; // amarillo suave, igual que en Userpage.jsx
+    const yellowCard = "#FFF9C4";
 
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
@@ -43,19 +80,7 @@ const Chatciencia = () => {
                 overflow: "hidden"
             }}
         >
-            <div
-                className="card p-5 shadow d-flex flex-column align-items-center justify-content-center"
-                style={{
-                    maxWidth: "900px",
-                    minWidth: "900px",
-                    minHeight: "600px",
-                    maxHeight: "600px",
-                    borderRadius: "40px",
-                    backgroundColor: yellowCard,
-                    aspectRatio: "1/1",
-                    zIndex: 1
-                }}
-            >
+            <div className="card-custom card-ciencia p-5 shadow d-flex flex-column align-items-center justify-content-center">
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: "#444", fontSize: "2.5rem" }}>
                     Pregúntame sobre ciencia
                 </h2>
@@ -94,9 +119,10 @@ const Chatciencia = () => {
                         {loading ? "Consultando..." : "Preguntar"}
                     </button>
                 </form>
-                <div className="respuesta-clarifai">
-                    {answer}
-                </div>
+                <div
+                    className="respuesta-clarifai"
+                    dangerouslySetInnerHTML={{ __html: answerStyle(answer) }}
+                />
             </div>
         </div>
     );

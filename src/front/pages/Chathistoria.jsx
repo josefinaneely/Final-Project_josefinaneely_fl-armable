@@ -1,5 +1,41 @@
 import React, { useState } from "react";
 
+// Función para transformar el texto de answer a HTML estilizado
+function answerStyle(text) {
+    if (!text) return "";
+
+    // 1. Reemplaza **frase** por <b>frase</b>
+    let html = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+
+    // 2. Detecta listas numeradas tipo: 1. texto, 2. texto, ... y las convierte en <ul><li>...</li></ul>
+    const lines = html.split(/\n/);
+    let inList = false;
+    let result = [];
+    lines.forEach(line => {
+        const match = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if (match) {
+            if (!inList) {
+                result.push("<ul style='text-align:left; margin-left:1.5em;'>");
+                inList = true;
+            }
+            result.push(`<li>${match[2]}</li>`);
+        } else {
+            if (inList) {
+                result.push("</ul>");
+                inList = false;
+            }
+            result.push(line);
+        }
+    });
+    if (inList) result.push("</ul>");
+    html = result.join("\n");
+
+    // 3. Opcional: reemplaza saltos de línea por <br> para mantener formato
+    html = html.replace(/\n/g, "<br>");
+
+    return html;
+}
+
 const Chathistoria = () => {
     const cloudColor = "#6EC6F3";
     const greenCard = "#A6E9B4";
@@ -20,7 +56,7 @@ const Chathistoria = () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ask`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question, tema: "historia" }) // <-- agrega el tema
+                body: JSON.stringify({ question, tema: "historia" })
             });
             const data = await response.json();
             if (response.ok) {
@@ -43,19 +79,7 @@ const Chathistoria = () => {
                 overflow: "hidden"
             }}
         >
-            <div
-                className="card p-5 shadow d-flex flex-column align-items-center justify-content-center"
-                style={{
-                    maxWidth: "900px",
-                    minWidth: "900px",
-                    minHeight: "600px",
-                    maxHeight: "600px",
-                    borderRadius: "40px",
-                    backgroundColor: greenCard,
-                    aspectRatio: "1/1",
-                    zIndex: 1
-                }}
-            >
+            <div className="card-custom card-historia p-5 shadow d-flex flex-column align-items-center justify-content-center">
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: "#222", fontSize: "2.5rem" }}>
                     Pregúntame sobre historia
                 </h2>
@@ -94,11 +118,11 @@ const Chathistoria = () => {
                         {loading ? "Consultando..." : "Preguntar"}
                     </button>
                 </form>
-                {answer && (
-                    <div className="respuesta-clarifai mt-4 w-100 text-center">
-                        {answer}
-                    </div>
-                )}
+                {/* Área de respuesta con alto fijo y scroll */}
+                <div
+                    className="respuesta-clarifai"
+                    dangerouslySetInnerHTML={{ __html: answerStyle(answer) }}
+                />
             </div>
         </div>
     );

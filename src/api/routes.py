@@ -8,6 +8,7 @@ from flask_cors import CORS
 import jwt
 import datetime
 import os
+import re
 
 # Importa el SDK de Clarifai
 from clarifai.client.model import Model
@@ -126,6 +127,8 @@ def ask_clarifai():
         if answer.startswith(prompt_arreglado):
             answer = answer[len(prompt_arreglado):].lstrip()
 
+        answer = re.sub(r"<think>.*?</think>", "",
+                        answer, flags=re.DOTALL).strip()
         print("Respuesta procesada:", answer)
 
     except Exception as e:
