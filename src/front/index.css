@@ -22,3 +22,15 @@ body {
   background-size: cover;
   background-position: center;
 }
+
+.respuesta-clarifai {
+  background: #fffbe6;
+  color: #333;
+  border-radius: 18px;
+  padding: 20px 24px;
+  margin-top: 24px;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: 2px solid #ffe066;
+  text-align: left;
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Chathistoria = () => {
     const cloudColor = "#6EC6F3";
-    const greenCard = "#A6E9B4"; // verde menos fuerte, igual que en Userpage.jsx
+    const greenCard = "#A6E9B4";
 
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
@@ -20,7 +20,7 @@ const Chathistoria = () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ask`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question })
+                body: JSON.stringify({ question, tema: "historia" }) // <-- agrega el tema
             });
             const data = await response.json();
             if (response.ok) {
@@ -95,7 +95,7 @@ const Chathistoria = () => {
                     </button>
                 </form>
                 {answer && (
-                    <div className="mt-4 alert alert-success w-100 text-center" style={{ fontSize: "1.2rem", borderRadius: "20px" }}>
+                    <div className="respuesta-clarifai mt-4 w-100 text-center">
                         {answer}
                     </div>
                 )}

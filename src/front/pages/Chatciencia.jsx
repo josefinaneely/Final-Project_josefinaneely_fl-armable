@@ -94,11 +94,9 @@ const Chatciencia = () => {
                         {loading ? "Consultando..." : "Preguntar"}
                     </button>
                 </form>
-                {answer && (
-                    <div className="mt-4 alert alert-success w-100 text-center" style={{ fontSize: "1.2rem", borderRadius: "20px" }}>
-                        {answer}
-                    </div>
-                )}
+                <div className="respuesta-clarifai">
+                    {answer}
+                </div>
             </div>
         </div>
     );
