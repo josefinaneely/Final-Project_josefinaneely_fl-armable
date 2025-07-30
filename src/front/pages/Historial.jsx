@@ -7,11 +7,12 @@ const Historial = () => {
     const userEmail = localStorage.getItem("userEmail");
 
     useEffect(() => {
-        // Obtener historial de localStorage o inicializar vacío
-        const historialGuardado = JSON.parse(localStorage.getItem("historialPreguntas")) || [];
-        // Tomar solo las últimas 6 preguntas
+        const userEmail = localStorage.getItem("userEmail");
+        const key = `historialPreguntas_${userEmail}`;
+        const historialGuardado = JSON.parse(localStorage.getItem(key)) || [];
         setPreguntas(historialGuardado.slice(-6).reverse());
     }, []);
+
 
     return (
         <div

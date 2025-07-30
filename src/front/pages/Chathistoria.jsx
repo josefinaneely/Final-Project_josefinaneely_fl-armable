@@ -43,7 +43,7 @@ const Chathistoria = () => {
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
     const [historial, setHistorial] = useState(
-        JSON.parse(localStorage.getItem("historialPreguntas")) || []
+        JSON.parse(localStorage.getItem(`historialPreguntas_${localStorage.getItem("userEmail")}`)) || []
     );
 
     const navigate = useNavigate();
@@ -75,13 +75,12 @@ const Chathistoria = () => {
         setLoading(false);
         setQuestion("");
 
-        // Guardar pregunta en historial
-        const nuevoHistorial = [
-            ...historial,
-            { texto: question, tema: "historia" }
-        ];
-        localStorage.setItem("historialPreguntas", JSON.stringify(nuevoHistorial));
-        setHistorial(nuevoHistorial);
+        // Guardar pregunta en historial solo para este usuario
+        const key = `historialPreguntas_${userEmail}`;
+        const historial = JSON.parse(localStorage.getItem(key)) || [];
+        historial.push({ texto: question, tema: "historia" });
+        localStorage.setItem(key, JSON.stringify(historial));
+        setHistorial(historial);
     };
 
     // Últimas 3 preguntas SOLO de historia

@@ -42,12 +42,14 @@ const Chatciencia = () => {
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const userEmail = localStorage.getItem("userEmail");
+    const key = `historialPreguntas_${userEmail}`;
     const [historial, setHistorial] = useState(
-        JSON.parse(localStorage.getItem("historialPreguntas")) || []
+        JSON.parse(localStorage.getItem(key)) || []
     );
 
     const navigate = useNavigate();
-    const userEmail = localStorage.getItem("userEmail");
 
     const handleInputChange = (e) => {
         setQuestion(e.target.value);
@@ -75,13 +77,11 @@ const Chatciencia = () => {
         setLoading(false);
         setQuestion("");
 
-        // Guardar pregunta en historial
-        const nuevoHistorial = [
-            ...historial,
-            { texto: question, tema: "ciencia" }
-        ];
-        localStorage.setItem("historialPreguntas", JSON.stringify(nuevoHistorial));
-        setHistorial(nuevoHistorial);
+        // Guardar pregunta en historial solo para este usuario
+        const historial = JSON.parse(localStorage.getItem(key)) || [];
+        historial.push({ texto: question, tema: "ciencia" });
+        localStorage.setItem(key, JSON.stringify(historial));
+        setHistorial(historial);
     };
 
     // Últimas 3 preguntas SOLO de ciencia
