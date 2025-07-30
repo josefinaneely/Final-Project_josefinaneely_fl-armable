@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 // Función para transformar el texto de answer a HTML estilizado
 function answerStyle(text) {
@@ -38,11 +39,15 @@ function answerStyle(text) {
 
 const Chathistoria = () => {
     const cloudColor = "#6EC6F3";
-    const greenCard = "#A6E9B4";
-
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
+    const [historial, setHistorial] = useState(
+        JSON.parse(localStorage.getItem("historialPreguntas")) || []
+    );
+
+    const navigate = useNavigate();
+    const userEmail = localStorage.getItem("userEmail");
 
     const handleInputChange = (e) => {
         setQuestion(e.target.value);
@@ -69,7 +74,21 @@ const Chathistoria = () => {
         }
         setLoading(false);
         setQuestion("");
+
+        // Guardar pregunta en historial
+        const nuevoHistorial = [
+            ...historial,
+            { texto: question, tema: "historia" }
+        ];
+        localStorage.setItem("historialPreguntas", JSON.stringify(nuevoHistorial));
+        setHistorial(nuevoHistorial);
     };
+
+    // Últimas 3 preguntas SOLO de historia
+    const ultimasPreguntas = historial
+        .filter(p => p.tema === "historia")
+        .slice(-3)
+        .reverse();
 
     return (
         <div
@@ -79,6 +98,43 @@ const Chathistoria = () => {
                 overflow: "hidden"
             }}
         >
+            {/* Navbar morada clara, redondeada y con padding arriba */}
+            <nav className="navbar-morada">
+                {/* Botón izquierdo con texto "Historial" que navega a /historial */}
+                <button
+                    className="navbar-btn-izq"
+                    onClick={() => navigate("/historial")}
+                >
+                    Historial
+                </button>
+                {/* Mail del usuario centrado */}
+                <div style={{
+                    flex: 1,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#fff"
+                }}>
+                    {userEmail}
+                </div>
+                {/* Botón cerrar sesión centrado */}
+                <button
+                    className="navbar-btn-cerrar"
+                    onClick={() => navigate("/login")}
+                >
+                    Cerrar sesión
+                </button>
+            </nav>
+            {/* Espacio para que la navbar fija no tape el contenido */}
+            <div style={{ height: "100px" }}></div>
+            {/* Botón arriba a la izquierda */}
+            <div style={{ position: "absolute", top: "60px", left: "60px", zIndex: 2 }}>
+                <Link to="/userpage" style={{ minWidth: "200px", textDecoration: "none" }}>
+                    <button className="btn btn-rosado">
+                        Volver a chats
+                    </button>
+                </Link>
+            </div>
             <div className="card-custom card-historia p-5 shadow d-flex flex-column align-items-center justify-content-center">
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: "#222", fontSize: "2.5rem" }}>
                     Pregúntame sobre historia
@@ -115,14 +171,70 @@ const Chathistoria = () => {
                         }}
                         disabled={loading}
                     >
-                        {loading ? "Consultando..." : "Preguntar"}
+                        Preguntar
                     </button>
+                    {loading && (
+                        <div style={{ marginTop: "24px", textAlign: "center" }}>
+                            <span
+                                className="loading-bounce"
+                                role="img"
+                                aria-label="hongo saltando"
+                                style={{ fontSize: "11rem", lineHeight: "1" }}
+                            >
+                                🍄
+                            </span>
+                            <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#444" }}>
+                                ¡Espéranos un momento!
+                            </div>
+                        </div>
+                    )}
                 </form>
                 {/* Área de respuesta con alto fijo y scroll */}
                 <div
                     className="respuesta-clarifai"
                     dangerouslySetInnerHTML={{ __html: answerStyle(answer) }}
                 />
+                {/* Historial de las últimas 6 preguntas */}
+                <div className="mt-5 w-100">
+                    <h4 style={{ color: "black", fontWeight: "bold" }}>Tus últimas preguntas</h4>
+                    <div className="d-flex flex-column gap-3">
+                        {ultimasPreguntas.length === 0 ? (
+                            <div className="text-center text-muted" style={{ fontSize: "1.2rem" }}>
+                                No hay preguntas recientes.
+                            </div>
+                        ) : (
+                            ultimasPreguntas.map((pregunta, idx) => (
+                                <div
+                                    key={idx}
+                                    style={{
+                                        borderRadius: "20px",
+                                        backgroundColor: "#A6E9B4",
+                                        padding: "16px 24px",
+                                        fontWeight: "bold",
+                                        fontSize: "1.2rem",
+                                        color: "#444",
+                                        display: "flex",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    <span style={{
+                                        color: "#fff",
+                                        backgroundColor: "#43A047",
+                                        borderRadius: "12px",
+                                        padding: "6px 18px",
+                                        marginRight: "16px",
+                                        minWidth: "90px",
+                                        textTransform: "capitalize",
+                                        display: "inline-block"
+                                    }}>
+                                        {pregunta.tema}
+                                    </span>
+                                    <span style={{ flex: 1 }}>{pregunta.texto}</span>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

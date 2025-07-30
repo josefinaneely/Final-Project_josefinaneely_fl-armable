@@ -61,3 +61,91 @@ body {
 .card-historia {
   background-color: #a6e9b4; /* verde */
 }
+
+.loading-bounce {
+  display: inline-block;
+  animation: bounce 0.7s infinite alternate;
+  font-size: 2.2rem;
+  vertical-align: middle;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-18px);
+  }
+}
+
+.navbar-morada {
+  width: 80vw;
+  max-width: 1100px;
+  min-width: 600px;
+  height: 100px;
+  background: #b6e0f7;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  border-radius: 40px;
+  padding: 40px 80px 40px 80px; /* Más padding arriba, abajo y a los costados */
+  box-shadow: 0 4px 16px rgba(142, 36, 170, 0.08);
+}
+
+.navbar-morada .navbar-btn-izq {
+  background: hsl(335, 100%, 86%); /* Rosado claro */
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.3rem;
+  border-radius: 18px;
+  padding: 20px 40px; /* Igual que el botón cerrar */
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  margin-right: auto; /* Empuja el botón cerrar sesión a la derecha */
+  margin-left: 0; /* Asegura que esté pegado a la izquierda */
+  position: static; /* Dentro del flujo del navbar */
+}
+
+.navbar-morada .navbar-btn-cerrar {
+  background: hsl(335, 100%, 86%); /* Rosado claro */
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.3rem;
+  border-radius: 18px;
+  padding: 20px 40px; /* Más padding a los costados */
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  margin-left: auto; /* Lleva el botón a la derecha dentro del navbar */
+  position: static; /* Importante: que no sea absolute para estar dentro del flujo del navbar */
+}
+
+.btn-rosado {
+  height: 80px;
+  font-size: 1.3rem;
+  background-color: hsl(335, 100%, 86%);
+  border-color: hsl(335, 100%, 86%);
+  color: #fff;
+  border-radius: 28px;
+  font-weight: bold;
+  min-width: 260px;
+  padding: 0 48px;
+  position: absolute;
+  top: 180px;
+  left: 60px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Espaciado igual arriba y abajo */
+  margin-top: 0;
+  margin-bottom: 80px; /* Ajusta este valor para igualar el espacio arriba y abajo */
+}
+
+.btn-rosado span,
+.btn-rosado-text {
+  padding: 0 18px;
+}

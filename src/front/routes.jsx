@@ -15,6 +15,7 @@ import { Userpage } from "./pages/Userpage";
 import { Signup } from "./pages/Signup";
 import Chathistoria from "./pages/Chathistoria";
 import Chatciencia from "./pages/Chatciencia";
+import Historial from "./pages/Historial";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,7 @@ export const router = createBrowserRouter(
       <Route path="/signup" element={<Signup />} />
       <Route path="/chatciencia" element={<Chatciencia />} />
       <Route path="/chathistoria" element={<Chathistoria />} />
+      <Route path="/historial" element={<Historial />} />
 
       {/* Outlet component renders the matched child route */}
     </Route>

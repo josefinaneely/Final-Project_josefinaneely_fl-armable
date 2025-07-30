@@ -23,6 +23,8 @@ export const Login = () => {
                 });
                 const data = await response.json();
                 if (response.ok) {
+                    // Cuando el login es exitoso:
+                    localStorage.setItem("userEmail", email);
                     navigate("/userpage");
                 } else {
                     setError(data.msg || "Usuario o contraseña incorrectos");

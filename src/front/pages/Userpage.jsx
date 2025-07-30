@@ -1,10 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Userpage = () => {
     const cloudColor = "#6EC6F3";
     const yellowCard = "#FFF9C4"; // amarillo suave, mismo tono que el verde
     const greenCard = "#A6E9B4"; // verde menos fuerte, igual que en Chathistoria.jsx
+
+    const navigate = useNavigate();
+    const userEmail = localStorage.getItem("userEmail"); // Obtiene el mail
 
     return (
         <div
@@ -14,6 +17,31 @@ export const Userpage = () => {
                 overflow: "hidden"
             }}
         >
+            {/* Navbar centrada con mail y botón cerrar sesión */}
+            <nav className="navbar-morada">
+                <button
+                    className="navbar-btn-izq"
+                    onClick={() => navigate("/historial")}
+                >
+                    Historial
+                </button>
+                <div style={{
+                    flex: 1,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#fff"
+                }}>
+                    {userEmail}
+                </div>
+                <button
+                    className="navbar-btn-cerrar"
+                    onClick={() => navigate("/login")}
+                >
+                    Cerrar sesión
+                </button>
+            </nav>
+            <div style={{ height: "120px" }}></div>
             {/* Card Ciencia - Amarillo suave */}
             <div
                 className="card p-5 shadow mb-5 d-flex flex-row align-items-center justify-content-center"
