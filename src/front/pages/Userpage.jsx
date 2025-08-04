@@ -3,22 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Userpage = () => {
     const cloudColor = "#6EC6F3";
-    const yellowCard = "#FFF9C4"; // amarillo suave, mismo tono que el verde
-    const greenCard = "#A6E9B4"; // verde menos fuerte, igual que en Chathistoria.jsx
+    const yellowCard = "#FFF9C4";
+    const greenCard = "#A6E9B4";
 
     const navigate = useNavigate();
-    const userEmail = localStorage.getItem("userEmail"); // Obtiene el mail
+    const userEmail = localStorage.getItem("userEmail");
 
     return (
         <div
             className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
             style={{
                 position: "relative",
-                overflow: "hidden"
+                overflow: "hidden",
+                width: "100vw",
+                minHeight: "100vh"
             }}
         >
             {/* Navbar centrada con mail y botón cerrar sesión */}
-            <nav className="navbar-morada">
+            <nav className="navbar-morada w-100">
                 <button
                     className="navbar-btn-izq"
                     onClick={() => navigate("/historial")}
@@ -41,79 +43,74 @@ export const Userpage = () => {
                     Cerrar sesión
                 </button>
             </nav>
-            <div style={{ height: "120px" }}></div>
-            {/* Card Ciencia - Amarillo suave */}
-            <div
-                className="card p-5 shadow mb-5 d-flex flex-row align-items-center justify-content-center"
-                style={{
-                    maxWidth: "700px",
-                    minWidth: "700px",
-                    minHeight: "400px",
-                    maxHeight: "400px",
-                    borderRadius: "40px",
-                    backgroundColor: yellowCard,
-                    aspectRatio: "1/1",
-                    zIndex: 1
-                }}
-            >
-                <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                    <h2 style={{ fontWeight: "bold", color: "#444", fontSize: "2.5rem" }}>
-                        Pregúntame sobre ciencia
-                    </h2>
-                    <Link to="/chatciencia" style={{ minWidth: "200px" }}>
-                        <button
-                            className="btn mt-4"
+            <div style={{ height: "60px" }}></div>
+            {/* Cards en columna para móvil y en fila para escritorio */}
+            <div className="container-fluid px-2">
+                <div className="row justify-content-center gap-4">
+                    <div className="col-12 col-md-6 d-flex">
+                        <div
+                            className="card p-4 shadow flex-grow-1 d-flex flex-column align-items-center justify-content-center mb-4"
                             style={{
-                                height: "70px",
-                                fontSize: "1.7rem",
-                                backgroundColor: cloudColor,
-                                borderColor: cloudColor,
-                                color: "#fff",
-                                borderRadius: "20px",
-                                fontWeight: "bold",
+                                borderRadius: "32px",
+                                backgroundColor: yellowCard,
+                                minHeight: "280px",
+                                maxWidth: "100%",
                                 width: "100%"
                             }}
                         >
-                            Ir al chat
-                        </button>
-                    </Link>
-                </div>
-            </div>
-            {/* Card Historia - Verde menos fuerte */}
-            <div
-                className="card p-5 shadow d-flex flex-row align-items-center justify-content-center"
-                style={{
-                    maxWidth: "700px",
-                    minWidth: "700px",
-                    minHeight: "400px",
-                    maxHeight: "400px",
-                    borderRadius: "40px",
-                    backgroundColor: greenCard,
-                    aspectRatio: "1/1",
-                    zIndex: 1
-                }}
-            >
-                <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                    <h2 style={{ fontWeight: "bold", color: "#222", fontSize: "2.5rem" }}>
-                        Pregúntame sobre historia
-                    </h2>
-                    <Link to="/chathistoria" style={{ minWidth: "200px" }}>
-                        <button
-                            className="btn mt-4"
+                            <h2 style={{ fontWeight: "bold", color: "#444", fontSize: "2rem", textAlign: "center" }}>
+                                Pregúntame sobre ciencia
+                            </h2>
+                            <Link to="/chatciencia" style={{ width: "100%" }}>
+                                <button
+                                    className="btn mt-4 w-100"
+                                    style={{
+                                        height: "56px",
+                                        fontSize: "1.3rem",
+                                        backgroundColor: cloudColor,
+                                        borderColor: cloudColor,
+                                        color: "#fff",
+                                        borderRadius: "20px",
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    Ir al chat
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-6 d-flex">
+                        <div
+                            className="card p-4 shadow flex-grow-1 d-flex flex-column align-items-center justify-content-center mb-4"
                             style={{
-                                height: "70px",
-                                fontSize: "1.7rem",
-                                backgroundColor: cloudColor,
-                                borderColor: cloudColor,
-                                color: "#fff",
-                                borderRadius: "20px",
-                                fontWeight: "bold",
+                                borderRadius: "32px",
+                                backgroundColor: greenCard,
+                                minHeight: "280px",
+                                maxWidth: "100%",
                                 width: "100%"
                             }}
                         >
-                            Ir al chat
-                        </button>
-                    </Link>
+                            <h2 style={{ fontWeight: "bold", color: "#222", fontSize: "2rem", textAlign: "center" }}>
+                                Pregúntame sobre historia
+                            </h2>
+                            <Link to="/chathistoria" style={{ width: "100%" }}>
+                                <button
+                                    className="btn mt-4 w-100"
+                                    style={{
+                                        height: "56px",
+                                        fontSize: "1.3rem",
+                                        backgroundColor: cloudColor,
+                                        borderColor: cloudColor,
+                                        color: "#fff",
+                                        borderRadius: "20px",
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    Ir al chat
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

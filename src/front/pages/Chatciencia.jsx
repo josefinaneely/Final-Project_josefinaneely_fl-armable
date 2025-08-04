@@ -79,7 +79,7 @@ const Chatciencia = () => {
 
         // Guardar pregunta en historial solo para este usuario
         const historial = JSON.parse(localStorage.getItem(key)) || [];
-        historial.push({ texto: question, tema: "ciencia" });
+        historial.push({ pregunta: question, respuesta: answer, tema: "ciencia" });
         localStorage.setItem(key, JSON.stringify(historial));
         setHistorial(historial);
     };
@@ -91,15 +91,9 @@ const Chatciencia = () => {
         .reverse();
 
     return (
-        <div
-            className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
-            style={{
-                position: "relative",
-                overflow: "hidden"
-            }}
-        >
+        <div className="container-fluid w-100 d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti" style={{ position: "relative", overflow: "hidden" }}>
             {/* Navbar morada clara, redondeada y con padding arriba */}
-            <nav className="navbar-morada">
+            <nav className="navbar-morada w-100" style={{ minWidth: 0 }}>
                 {/* Botón izquierdo con texto "Historial" que navega a /historial */}
                 <button
                     className="navbar-btn-izq"
@@ -130,15 +124,15 @@ const Chatciencia = () => {
             <div style={{ height: "100px" }}></div>
 
             {/* Botón volver a chats */}
-            <div style={{ position: "absolute", top: "80px", left: "60px", zIndex: 2 }}>
+            <div className="d-flex justify-content-end w-100" style={{ marginBottom: "16px" }}>
                 <Link to="/userpage" style={{ minWidth: "200px", textDecoration: "none" }}>
                     <button className="btn btn-rosado">
                         Volver a chats
                     </button>
                 </Link>
             </div>
-            <div className="card-custom card-ciencia p-5 shadow d-flex flex-column align-items-center justify-content-center">
-                <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: "#444", fontSize: "2.5rem" }}>
+            <div className="card-custom card-ciencia p-5 shadow w-100" style={{ maxWidth: "600px", borderRadius: "32px", alignItems: "flex-start" }}>
+                <h2 className="mb-4 text-center w-100" style={{ fontWeight: "bold", color: "#444", fontSize: "2.5rem" }}>
                     Pregúntame sobre ciencia
                 </h2>
                 <form onSubmit={handleSubmit} className="w-100 d-flex flex-column align-items-center">
@@ -151,7 +145,6 @@ const Chatciencia = () => {
                         style={{
                             borderRadius: "20px",
                             fontSize: "1.2rem",
-                            maxWidth: "500px",
                             width: "100%",
                             padding: "18px 20px"
                         }}
@@ -195,7 +188,7 @@ const Chatciencia = () => {
                     className="respuesta-clarifai"
                     dangerouslySetInnerHTML={{ __html: answerStyle(answer) }}
                 />
-                {/* Historial de las últimas 6 preguntas SOLO de ciencia */}
+                {/* Historial de las últimas 3 preguntas SOLO de ciencia */}
                 <div className="mt-5 w-100">
                     <h4 style={{ color: "#444", fontWeight: "bold" }}>Tus últimas preguntas</h4>
                     <div className="d-flex flex-column gap-3">
@@ -207,6 +200,7 @@ const Chatciencia = () => {
                             ultimasPreguntas.map((pregunta, idx) => (
                                 <div
                                     key={idx}
+                                    className="d-flex flex-column mb-3"
                                     style={{
                                         borderRadius: "20px",
                                         backgroundColor: "#FFF9C4",
@@ -214,23 +208,43 @@ const Chatciencia = () => {
                                         fontWeight: "bold",
                                         fontSize: "1.2rem",
                                         color: "#444",
-                                        display: "flex",
-                                        alignItems: "center"
+                                        width: "100%",
+                                        textAlign: "left"
                                     }}
                                 >
-                                    <span style={{
-                                        color: "#fff",
-                                        backgroundColor: "#FFD600",
-                                        borderRadius: "12px",
-                                        padding: "6px 18px",
-                                        marginRight: "16px",
-                                        minWidth: "90px",
-                                        textTransform: "capitalize",
-                                        display: "inline-block"
+                                    <div className="d-flex flex-row align-items-center">
+                                        <span style={{
+                                            color: "#fff",
+                                            backgroundColor: "#FFD600",
+                                            borderRadius: "12px",
+                                            padding: "6px 18px",
+                                            marginRight: "16px",
+                                            minWidth: "90px",
+                                            textTransform: "capitalize",
+                                            display: "inline-block"
+                                        }}>
+                                            {pregunta.tema}
+                                        </span>
+                                        <span style={{ flex: 1 }}>
+                                            {pregunta.pregunta || pregunta.texto?.split('\n')[0] || "Pregunta"}
+                                        </span>
+                                    </div>
+                                    <div style={{
+                                        marginLeft: "106px",
+                                        marginTop: "8px",
+                                        fontWeight: "normal",
+                                        fontSize: "1.1rem",
+                                        color: "#333",
+                                        whiteSpace: "pre-line"
                                     }}>
-                                        {pregunta.tema}
-                                    </span>
-                                    <span style={{ flex: 1 }}>{pregunta.texto}</span>
+                                        {
+                                            pregunta.respuesta
+                                                ? pregunta.respuesta.split('\n').slice(0, 3).join('\n')
+                                                : pregunta.texto
+                                                    ? pregunta.texto.split('\n').slice(1, 4).join('\n')
+                                                    : ""
+                                        }
+                                    </div>
                                 </div>
                             ))
                         )}

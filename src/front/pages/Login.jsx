@@ -41,11 +41,19 @@ export const Login = () => {
         <div
             className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
             style={{
+                width: "100vw",
+                minHeight: "100vh",
                 position: "relative",
                 overflow: "hidden"
             }}
         >
-            <div className="card p-5 shadow" style={{ maxWidth: "480px", width: "100%", borderRadius: "40px", backgroundColor: "#fff", zIndex: 1 }}>
+            <div className="card p-5 shadow w-100" style={{
+                maxWidth: "480px",
+                borderRadius: "40px",
+                backgroundColor: "#fff",
+                zIndex: 1,
+                boxSizing: "border-box"
+            }}>
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Iniciar sesión</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

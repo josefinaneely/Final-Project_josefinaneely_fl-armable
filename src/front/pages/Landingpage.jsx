@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 
 export const Landingpage = () => {
-    const cloudColor = "#6EC6F3"; // Ejemplo: azul claro, reemplaza por el color real de tu logo
+    const cloudColor = "#6EC6F3"; // Azul claro
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti">
-            {/* Logo rectangular con bordes muy redondeados */}
-            <div className="mb-5" style={{ width: "600px" }}>
+        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti" style={{ width: "100vw", minHeight: "100vh" }}>
+            {/* Logo y botón en un contenedor responsive */}
+            <div
+                className="mb-5"
+                style={{
+                    width: "100%",
+                    maxWidth: "600px",
+                    padding: "24px",
+                    boxSizing: "border-box"
+                }}
+            >
                 <img
                     src="/logoo.jpg"
                     alt="Logo Lets"
@@ -20,7 +28,7 @@ export const Landingpage = () => {
                     }}
                 />
                 {/* Botón de acceso al login alineado con el logo */}
-                <Link to="/login" style={{ width: "100%" }}>
+                <Link to="/login" style={{ width: "100%", display: "block" }}>
                     <button
                         className="btn btn-lg w-100 mt-4"
                         style={{
@@ -29,7 +37,8 @@ export const Landingpage = () => {
                             backgroundColor: cloudColor,
                             borderColor: "#fff",
                             color: "#fff",
-                            borderWidth: "3px"
+                            borderWidth: "3px",
+                            borderRadius: "24px"
                         }}
                     >
                         Entrar

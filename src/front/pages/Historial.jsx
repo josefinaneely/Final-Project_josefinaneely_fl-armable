@@ -68,10 +68,10 @@ const Historial = () => {
                     preguntas.map((pregunta, idx) => (
                         <div
                             key={idx}
-                            className="d-flex flex-row align-items-center mb-3"
+                            className="d-flex flex-column mb-3"
                             style={{
                                 borderRadius: "20px",
-                                backgroundColor: "transparent", // Sin fondo blanco
+                                backgroundColor: "transparent",
                                 fontSize: "1.6rem",
                                 fontWeight: "bold",
                                 color: "#444",
@@ -80,19 +80,40 @@ const Historial = () => {
                                 textAlign: "left"
                             }}
                         >
-                            <span style={{
-                                color: "#fff",
-                                backgroundColor: pregunta.tema === "ciencia" ? "#FFD600" : "#43A047",
-                                borderRadius: "12px",
-                                padding: "6px 18px",
-                                marginRight: "16px",
-                                minWidth: "90px",
-                                textTransform: "capitalize",
-                                display: "inline-block"
+                            <div className="d-flex flex-row align-items-center">
+                                <span style={{
+                                    color: "#fff",
+                                    backgroundColor: pregunta.tema === "ciencia" ? "#FFD600" : "#43A047",
+                                    borderRadius: "12px",
+                                    padding: "6px 18px",
+                                    marginRight: "16px",
+                                    minWidth: "90px",
+                                    textTransform: "capitalize",
+                                    display: "inline-block"
+                                }}>
+                                    {pregunta.tema}
+                                </span>
+                                <span style={{ flex: 1 }}>
+                                    {pregunta.pregunta || pregunta.texto?.split('\n')[0] || "Pregunta"}
+                                </span>
+                            </div>
+                            <div style={{
+                                marginLeft: "106px",
+                                marginTop: "8px",
+                                fontWeight: "normal",
+                                fontSize: "1.3rem",
+                                color: "#333",
+                                whiteSpace: "pre-line"
                             }}>
-                                {pregunta.tema}
-                            </span>
-                            <span style={{ flex: 1 }}>{pregunta.texto}</span>
+                                {
+                                    // Mostrar solo las primeras 3 líneas de la respuesta
+                                    pregunta.respuesta
+                                        ? pregunta.respuesta.split('\n').slice(0, 3).join('\n')
+                                        : pregunta.texto
+                                            ? pregunta.texto.split('\n').slice(1, 4).join('\n')
+                                            : ""
+                                }
+                            </div>
                         </div>
                     ))
                 )}

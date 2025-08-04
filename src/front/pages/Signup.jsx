@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
+    const [nombre, setNombre] = useState("");
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const cloudColor = "#6EC6F3";
@@ -14,50 +13,63 @@ export const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
 
-        if (email && password && name) {
+        if (email && password && nombre) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password, name })
+                    body: JSON.stringify({ email, password, nombre })
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    setSuccess("Cuenta creada exitosamente");
-                    setTimeout(() => navigate("/login"), 1800);
+                    localStorage.setItem("userEmail", email);
+                    navigate("/userpage");
                 } else {
-                    setError(data.msg || "Error al crear la cuenta");
+                    setError(data.msg || "No se pudo crear la cuenta");
                 }
             } catch (err) {
-                setError("Error de conexión con la API");
+                setError("Error de conexión con el servidor.");
             }
         } else {
-            setError("Por favor completa todos los campos.");
+            setError("Completa todos los campos");
         }
     };
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti" style={{ position: "relative", overflow: "hidden" }}>
-            <div className="card p-5 shadow" style={{ maxWidth: "480px", width: "100%", borderRadius: "40px", backgroundColor: "#fff" }}>
+        <div
+            className="d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti"
+            style={{
+                width: "100vw",
+                minHeight: "100vh",
+                position: "relative",
+                overflow: "hidden"
+            }}
+        >
+            <div className="card p-5 shadow w-100" style={{
+                maxWidth: "480px",
+                borderRadius: "40px",
+                backgroundColor: "#fff",
+                zIndex: 1,
+                boxSizing: "border-box"
+            }}>
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Crear cuenta</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="signupName" className="form-label" style={{ fontSize: "1.2rem" }}>Nombre</label>
+                        <label htmlFor="signupNombre" className="form-label" style={{ fontSize: "1.2rem" }}> Tu nombre </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="signupName"
+                            id="signupNombre"
                             placeholder=""
-                            value={name}
-                            onChange={e => setName(e.target.value)}
+                            value={nombre}
+                            onChange={e => setNombre(e.target.value)}
                             required
                             style={{ borderRadius: "20px", fontSize: "1.1rem" }}
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="signupEmail" className="form-label" style={{ fontSize: "1.2rem" }}>Email</label>
+                        <label htmlFor="signupEmail" className="form-label" style={{ fontSize: "1.2rem" }}> Tu email </label>
                         <input
                             type="email"
                             className="form-control"
@@ -70,7 +82,7 @@ export const Signup = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="signupPassword" className="form-label" style={{ fontSize: "1.2rem" }}>Contraseña</label>
+                        <label htmlFor="signupPassword" className="form-label" style={{ fontSize: "1.2rem" }}> Tu contraseña </label>
                         <input
                             type="password"
                             className="form-control"
@@ -83,20 +95,6 @@ export const Signup = () => {
                         />
                     </div>
                     {error && <div className="alert alert-danger">{error}</div>}
-                    {success && (
-                        <div
-                            className="alert alert-success text-center"
-                            style={{
-                                fontSize: "1.2rem",
-                                borderRadius: "20px",
-                                backgroundColor: cloudColor,
-                                color: "#fff",
-                                fontWeight: "bold"
-                            }}
-                        >
-                            {success}
-                        </div>
-                    )}
                     <button
                         type="submit"
                         className="btn w-100"
@@ -113,6 +111,12 @@ export const Signup = () => {
                         Crear cuenta
                     </button>
                 </form>
+                <div className="text-center mt-4" style={{ fontSize: "1.1rem" }}>
+                    ¿Ya tienes cuenta? Ingresa{" "}
+                    <Link to="/login" style={{ color: cloudColor, fontWeight: "bold", textDecoration: "underline" }}>
+                        aquí
+                    </Link>
+                </div>
             </div>
         </div>
     );

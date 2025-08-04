@@ -135,17 +135,42 @@ body {
   padding: 0 48px;
   position: absolute;
   top: 180px;
-  left: 60px;
+  left: 420px; /* Más a la derecha */
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Espaciado igual arriba y abajo */
   margin-top: 0;
-  margin-bottom: 80px; /* Ajusta este valor para igualar el espacio arriba y abajo */
+  margin-bottom: 80px;
 }
 
 .btn-rosado span,
 .btn-rosado-text {
   padding: 0 18px;
+}
+
+@media (max-width: 768px) {
+  .card-custom {
+    max-width: 98vw;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: auto;
+    padding: 16px;
+  }
+  .btn-rosado {
+    left: 10px;
+    top: 20px;
+    min-width: 90vw;
+    font-size: 1rem;
+    padding: 0 12px;
+    position: static;
+    margin-bottom: 24px;
+  }
+  .navbar-morada {
+    min-width: 0;
+    width: 98vw;
+    padding: 16px 8vw;
+    height: auto;
+    font-size: 1rem;
+  }
 }
