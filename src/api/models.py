@@ -56,3 +56,9 @@ class Chat(db.Model):
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "user_id": self.user_id
         }
+
+
+def add_chat_entry(prompt, answer, user):
+    chat = Chat(prompt=prompt, response=answer, user_id=user.id)
+    db.session.add(chat)
+    db.session.commit()

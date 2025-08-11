@@ -146,7 +146,12 @@ def ask_clarifai():
 
 @api.route('/chat', methods=['GET'])
 def get_chats():
-    chats = Chat.query.all()
+    user_id = request.args.get("user_id")
+    if user_id:
+        chats = Chat.query.filter_by(user_id=user_id).order_by(
+            Chat.created_at.desc()).all()
+    else:
+        chats = []
     return jsonify([chat.serialize() for chat in chats]), 200
 
 

@@ -84,10 +84,10 @@ const Chatciencia = () => {
         setHistorial(historial);
     };
 
-    // Últimas 3 preguntas SOLO de ciencia
+    // Últimas 2 preguntas SOLO de ciencia
     const ultimasPreguntas = historial
         .filter(p => p.tema === "ciencia")
-        .slice(-3)
+        .slice(-2)
         .reverse();
 
     return (
