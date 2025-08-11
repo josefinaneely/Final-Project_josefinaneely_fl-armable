@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 export const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [nombre, setNombre] = useState("");
+    const [name, setName] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
@@ -14,12 +14,12 @@ export const Signup = () => {
         e.preventDefault();
         setError("");
 
-        if (email && password && nombre) {
+        if (email && password && name) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password, nombre })
+                    body: JSON.stringify({ email, password, name })
                 });
                 const data = await response.json();
                 if (response.ok) {
@@ -56,14 +56,14 @@ export const Signup = () => {
                 <h2 className="mb-4 text-center" style={{ fontWeight: "bold", color: cloudColor, fontSize: "2.5rem" }}>Crear cuenta</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="signupNombre" className="form-label" style={{ fontSize: "1.2rem" }}> Tu nombre </label>
+                        <label htmlFor="signupName" className="form-label" style={{ fontSize: "1.2rem" }}> Tu nombre </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="signupNombre"
+                            id="signupName"
                             placeholder=""
-                            value={nombre}
-                            onChange={e => setNombre(e.target.value)}
+                            value={name}
+                            onChange={e => setName(e.target.value)}
                             required
                             style={{ borderRadius: "20px", fontSize: "1.1rem" }}
                         />
