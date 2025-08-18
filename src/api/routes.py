@@ -27,7 +27,13 @@ def construir_prompt(prompt, tema):
     :param tema: str, el tema ("ciencia", "historia", etc)
     :return: str, prompt listo para enviar al modelo
     """
-    return f"Eres un experto en {tema}, responde a la siguiente pregunta con una respuesta entre 4 y 6 líneas,enfocada en niños de 7 a 12 años, en español: {prompt}"
+    return (
+        f"Eres un experto en {tema}. "
+        f"Responde de manera muy clara, sencilla y breve, usando palabras fáciles de entender, "
+        f"para un niño o niña de entre 7 y 12 años. "
+        f"Tu respuesta debe ser corta (máximo 4 líneas). "
+        f"Pregunta: {prompt}"
+    )
 
 
 @api.route('/hello', methods=['POST', 'GET'])

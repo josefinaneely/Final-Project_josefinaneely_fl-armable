@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const Chathistoria = () => {
@@ -6,13 +6,11 @@ const Chathistoria = () => {
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const user_id = localStorage.getItem("user_id");
     const userEmail = localStorage.getItem("userEmail");
-    const key = `historialPreguntas_${userEmail}`;
-    const [historial, setHistorial] = useState(
-        JSON.parse(localStorage.getItem(key)) || []
-    );
-
     const navigate = useNavigate();
+
+    const [ultimasPreguntas, setUltimasPreguntas] = useState([]);
 
     const handleInputChange = (e) => {
         setQuestion(e.target.value);
@@ -26,7 +24,11 @@ const Chathistoria = () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ask`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question, tema: "historia" })
+                body: JSON.stringify({
+                    question,
+                    tema: "historia",
+                    user_id: user_id // envía el id numérico del usuario
+                })
             });
             const data = await response.json();
             if (response.ok) {
@@ -39,19 +41,33 @@ const Chathistoria = () => {
         }
         setLoading(false);
         setQuestion("");
-
-        // Guardar pregunta en historial solo para este usuario
-        const historial = JSON.parse(localStorage.getItem(key)) || [];
-        historial.push({ pregunta: question, respuesta: answer, tema: "historia" });
-        localStorage.setItem(key, JSON.stringify(historial));
-        setHistorial(historial);
+        fetchUltimasPreguntas();
     };
 
-    // Últimas 3 preguntas SOLO de historia
-    const ultimasPreguntas = historial
-        .filter(p => p.tema === "historia")
-        .slice(-3)
-        .reverse();
+    // Fetch para traer las últimas 2 preguntas de historia desde la API
+    const fetchUltimasPreguntas = async () => {
+        if (!user_id) return;
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chat?user_id=${user_id}`);
+            const data = await response.json();
+            const ultimas = data
+                .filter(chat => chat.tema === "historia" || (chat.prompt && chat.prompt.toLowerCase().includes("historia")))
+                .slice(-2)
+                .reverse()
+                .map(chat => ({
+                    ...chat,
+                    primerParrafo: chat.response ? chat.response.split('\n')[0] : ""
+                }));
+            setUltimasPreguntas(ultimas);
+        } catch (error) {
+            setUltimasPreguntas([]);
+        }
+    };
+
+    useEffect(() => {
+        fetchUltimasPreguntas();
+        // eslint-disable-next-line
+    }, [user_id]);
 
     return (
         <div className="container-fluid w-100 d-flex flex-column align-items-center justify-content-center vh-100 bg-celeste-confetti" style={{ position: "relative", overflow: "hidden" }}>
@@ -157,10 +173,10 @@ const Chathistoria = () => {
                                             textTransform: "capitalize",
                                             display: "inline-block"
                                         }}>
-                                            {pregunta.tema}
+                                            Historia
                                         </span>
                                         <span style={{ flex: 1 }}>
-                                            {pregunta.pregunta || pregunta.texto?.split('\n')[0] || "Pregunta"}
+                                            {pregunta.prompt}
                                         </span>
                                     </div>
                                     <div style={{
@@ -171,13 +187,7 @@ const Chathistoria = () => {
                                         color: "#333",
                                         whiteSpace: "pre-line"
                                     }}>
-                                        {
-                                            pregunta.respuesta
-                                                ? pregunta.respuesta.split('\n').slice(0, 3).join('\n')
-                                                : pregunta.texto
-                                                    ? pregunta.texto.split('\n').slice(1, 4).join('\n')
-                                                    : ""
-                                        }
+                                        {pregunta.primerParrafo}
                                     </div>
                                 </div>
                             ))
